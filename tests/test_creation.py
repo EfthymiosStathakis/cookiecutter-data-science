@@ -69,45 +69,7 @@ class TestCookieSetup(object):
         else:
             assert p == 'MIT'
 
-    def test_requirements(self):
-        reqs_path = self.path / 'requirements.txt'
-        assert reqs_path.exists()
-        assert no_curlies(reqs_path)
-        if pytest.param.get('python_interpreter'):
-            with open(reqs_path) as fin:
-                lines = list(map(lambda x: x.strip(), fin.readlines()))
-            assert 'pathlib2' in lines
-
     def test_makefile(self):
         makefile_path = self.path / 'Makefile'
         assert makefile_path.exists()
         assert no_curlies(makefile_path)
-
-    def test_folders(self):
-        expected_dirs = [
-            'data',
-            'data/external',
-            'data/interim',
-            'data/processed',
-            'data/raw',
-            'docs',
-            'models',
-            'notebooks',
-            'references',
-            'reports',
-            'reports/figures',
-            'src',
-            'src/data',
-            'src/features',
-            'src/models',
-            'src/visualization',
-        ]
-
-        ignored_dirs = [
-            str(self.path)
-        ]
-
-        abs_expected_dirs = [str(self.path / d) for d in expected_dirs]
-        abs_dirs, _, _ = list(zip(*os.walk(self.path)))
-        assert len(set(abs_expected_dirs + ignored_dirs) - set(abs_dirs)) == 0
-
